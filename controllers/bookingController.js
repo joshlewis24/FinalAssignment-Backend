@@ -101,7 +101,7 @@ exports.createBooking = async (req, res) => {
       driver: driverId,
     });
     // Notify customer
-    try { await sendBookingNotification(booking._id, 'confirmation'); } catch (e) { console.warn('Email error:', e.message); }
+    //try { await sendBookingNotification(booking._id, 'confirmation'); } catch (e) { console.warn('Email error:', e.message); }
     res.status(201).json(booking);
   } catch (err) {
     res.status(400).json({ message: err.message });
@@ -187,7 +187,7 @@ exports.completeBooking = async (req, res) => {
     if (!booking) return res.status(404).json({ message: 'Booking not found or not assigned to you' });
     if (!before || before.status !== 'completed') {
       await applyOwnerRevenueIfNeeded(booking._id);
-      try { await sendBookingNotification(booking._id, 'completed'); } catch (e) { console.warn('Email error:', e.message); }
+     // try { await sendBookingNotification(booking._id, 'completed'); } catch (e) { console.warn('Email error:', e.message); }
     }
     res.json({ message: 'Booking completed', booking });
   } catch (err) {
@@ -224,7 +224,7 @@ exports.cancelBooking = async (req, res) => {
     }
     const booking = await Booking.findOneAndUpdate(filter, { status: 'cancelled' }, { new: true });
     if (!booking) return res.status(404).json({ message: 'Booking not found or not accessible to you' });
-    try { await sendBookingNotification(booking._id, 'cancelled'); } catch (e) { console.warn('Email error:', e.message); }
+   // try { await sendBookingNotification(booking._id, 'cancelled'); } catch (e) { console.warn('Email error:', e.message); }
     res.json({ message: 'Booking cancelled', booking });
   } catch (err) {
     res.status(400).json({ message: err.message });
@@ -263,10 +263,10 @@ exports.updateBookingStatus = async (req, res) => {
     if (!booking) return res.status(404).json({ message: 'Booking not found or not accessible' });
     if (status === 'completed' && (!before || before.status !== 'completed')) {
       await applyOwnerRevenueIfNeeded(booking._id);
-      try { await sendBookingNotification(booking._id, 'completed'); } catch (e) { console.warn('Email error:', e.message); }
+     // try { await sendBookingNotification(booking._id, 'completed'); } catch (e) { console.warn('Email error:', e.message); }
     }
     if (status === 'cancelled' && (!before || before.status !== 'cancelled')) {
-      try { await sendBookingNotification(booking._id, 'cancelled'); } catch (e) { console.warn('Email error:', e.message); }
+      //try { await sendBookingNotification(booking._id, 'cancelled'); } catch (e) { console.warn('Email error:', e.message); }
     }
     
     res.json({ message: `Booking ${status}`, booking });
