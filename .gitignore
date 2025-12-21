@@ -1,0 +1,7 @@
+# Node dependencies
+node_modules/
+
+# Optional (recommended)
+.env
+.env.local
+.env.production
